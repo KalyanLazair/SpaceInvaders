@@ -7,17 +7,57 @@ ejercicio creado para explicar los siguientes conceptos;
  */
 package codigo;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import javax.swing.Timer;
+
 /**
  *
  * @author Thomas
  */
 public class VentanaJuego extends javax.swing.JFrame {
-
-    /**
-     * Creates new form VentanaJuego
-     */
+    //Vamos a declarar dos constantes. Las constantes se ponen en mayúsculas.
+    static int ANCHOPANTALLA=600;
+    static int ALTOPANTALLA=450;
+    
+    BufferedImage buffer=null;
+    
+    //bucle de animación del juego. En este caso es un hilo de ejecución nuevo que se encarga de refrescar el contenido de la pantalla.
+    Timer temporizador= new Timer(10, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //Código de la animación. Llamamos a un método.
+            bucleDelJuego();
+        }
+    });
+    //10 son los milisegundos que va a tardar en ejecutarse la siguiente vez.
+    //El ActionListener está en busca de cambios. Si encuentra un cambio modifica la pantalla.
+    
     public VentanaJuego() {
         initComponents();
+        setSize(ANCHOPANTALLA,ALTOPANTALLA);
+        buffer=(BufferedImage) jPanel1.createImage(ANCHOPANTALLA,ALTOPANTALLA);
+        buffer.createGraphics();
+        //Hay que inicializar el temporizador.
+        temporizador.start();
+    }
+    
+    private void bucleDelJuego(){
+        //El bucle de animación gobierna el redibujado de los objetos en el jPanel1.
+        Graphics2D g2= (Graphics2D) buffer.getGraphics();
+        g2.setColor(Color.black);
+        g2.fillRect(0,0,ANCHOPANTALLA,ALTOPANTALLA);
+        /////////////////////////////////////////////////////////////////////////
+           //redibujamos cada elemento en su nueva posición en el buffer.
+        
+        ////////////////////////////////////////////////////////////////////////
+        
+        //Dibujo de golpe el buffer sobre el jPanel1.
+        g2=(Graphics2D) jPanel1.getGraphics();
+        g2.drawImage(buffer, 0,0, null);
     }
 
     /**
@@ -29,17 +69,30 @@ public class VentanaJuego extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 756, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 532, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 756, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 532, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -81,5 +134,6 @@ public class VentanaJuego extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
