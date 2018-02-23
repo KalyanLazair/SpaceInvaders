@@ -27,7 +27,9 @@ public class VentanaJuego extends javax.swing.JFrame {
     BufferedImage buffer=null;
     int contador=0;
     //Declaramos la nave.
-    Nave miNave = new Nave();
+    Nave miNave = new Nave(ANCHOPANTALLA);
+    //Declaramos el disparo.
+    Disparo miDisparo=new Disparo(ALTOPANTALLA);
     
     //bucle de animación del juego. En este caso es un hilo de ejecución nuevo que se encarga de refrescar el contenido de la pantalla.
     Timer temporizador= new Timer(10, new ActionListener() {
@@ -70,6 +72,10 @@ public class VentanaJuego extends javax.swing.JFrame {
         //contador++;
         //Llamamos a la función de movimiento en la clase Nave.
         miNave.mueve();
+        //Movimiento del disparo.
+        miDisparo.mueve();
+        //pinto el disparo.
+        g2.drawImage(miDisparo.imagen,miDisparo.getX(),miDisparo.getY(),null);
         //Pinto la nave.
         g2.drawImage(miNave.imagen,miNave.x,miNave.y, null);
         
@@ -128,6 +134,8 @@ public class VentanaJuego extends javax.swing.JFrame {
         switch(evt.getKeyCode()){
             case KeyEvent.VK_LEFT : miNave.setPulsadoIzquierda(true); break;
             case KeyEvent.VK_RIGHT : miNave.setPulsadoDerecha(true); break;
+            case KeyEvent.VK_SPACE : miDisparo.setDisparado(true); 
+                                     miDisparo.posicionaDisparo(miNave); break;
         }
     }//GEN-LAST:event_formKeyPressed
 
@@ -135,6 +143,7 @@ public class VentanaJuego extends javax.swing.JFrame {
         switch(evt.getKeyCode()){
             case KeyEvent.VK_LEFT : miNave.setPulsadoIzquierda(false); break;
             case KeyEvent.VK_RIGHT : miNave.setPulsadoDerecha(false); break;
+            
         }
     }//GEN-LAST:event_formKeyReleased
 

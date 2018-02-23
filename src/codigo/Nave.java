@@ -27,11 +27,17 @@ public class Nave {
     //que son un Set y un Get. Para modificar la variable hay que usar un Set y para leer desde fuera hay que usar un Get.
     //Por ejemplo; miNave.set(x) o miNave.setPulsadoIzquierda(true); Ponemos el Pulsado en mayúsculas (la primera letra).
     
-    public Nave(){
+    /*Para poder aprovechar el código tendríamos que pasarle el ancho de la pantalla directamente en esta clase. No obstante
+    también podemos llamar desde la clase principal al ancho de la pantalla con VentanaPrincipal.ANCHOPANTALLA.*/
+    
+    private int anchoPantalla;
+    
+    public Nave(int _anchoPantalla){
       try{
         imagen=ImageIO.read(getClass().getResource("/codigo/Imagenes/nave.png"));
       }
       catch(IOException e){}
+      anchoPantalla=_anchoPantalla;
     }
 //Todas las variables son get por defecto menos los booleanos, que son is. NetBeans nos crea automáticamente el código cuando
     //Le damos click derecho sobre la variable, get code y getter&setter.
@@ -54,7 +60,12 @@ public class Nave {
     public void mueve(){
         if(pulsadoIzquierda && x>0){
           x--;
-        }else if(pulsadoDerecha && x<VentanaJuego.ANCHOPANTALLA){
+          x--;
+          x--;
+        }
+        if(pulsadoDerecha && x<anchoPantalla-imagen.getWidth(null)){
+          x++;
+          x++;
           x++;
         }
     }
