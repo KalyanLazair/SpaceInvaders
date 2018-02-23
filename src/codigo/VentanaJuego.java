@@ -7,6 +7,7 @@ ejercicio creado para explicar los siguientes conceptos;
  */
 package codigo;
 
+import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -24,6 +25,9 @@ public class VentanaJuego extends javax.swing.JFrame {
     static int ALTOPANTALLA=450;
     
     BufferedImage buffer=null;
+    int contador=0;
+    //Declaramos la nave.
+    Nave miNave = new Nave();
     
     //bucle de animación del juego. En este caso es un hilo de ejecución nuevo que se encarga de refrescar el contenido de la pantalla.
     Timer temporizador= new Timer(10, new ActionListener() {
@@ -38,11 +42,16 @@ public class VentanaJuego extends javax.swing.JFrame {
     
     public VentanaJuego() {
         initComponents();
-        setSize(ANCHOPANTALLA,ALTOPANTALLA);
+        setSize(ANCHOPANTALLA,ALTOPANTALLA );
         buffer=(BufferedImage) jPanel1.createImage(ANCHOPANTALLA,ALTOPANTALLA);
         buffer.createGraphics();
+        //Inicializamos la nave. Las x y las y son las que hemos declarado en la clase Nave.
+        miNave.x=ANCHOPANTALLA/2-miNave.imagen.getWidth(this)/2;
+        miNave.y=ALTOPANTALLA-miNave.imagen.getHeight(this)-40;
+        
         //Hay que inicializar el temporizador.
         temporizador.start();
+        
     }
     
     private void bucleDelJuego(){
@@ -58,6 +67,13 @@ public class VentanaJuego extends javax.swing.JFrame {
         //Dibujo de golpe el buffer sobre el jPanel1.
         g2=(Graphics2D) jPanel1.getGraphics();
         g2.drawImage(buffer, 0,0, null);
+        //contador++;
+        //Llamamos a la función de movimiento en la clase Nave.
+        miNave.mueve();
+        //Pinto la nave.
+        g2.drawImage(miNave.imagen,miNave.x,miNave.y, null);
+        
+        
     }
 
     /**
@@ -72,6 +88,15 @@ public class VentanaJuego extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -97,6 +122,21 @@ public class VentanaJuego extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        //Cada una de las teclas tiene un código. VK_LEFT/RIGHT son las flechas de movimiento.
+        switch(evt.getKeyCode()){
+            case KeyEvent.VK_LEFT : miNave.setPulsadoIzquierda(true); break;
+            case KeyEvent.VK_RIGHT : miNave.setPulsadoDerecha(true); break;
+        }
+    }//GEN-LAST:event_formKeyPressed
+
+    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+        switch(evt.getKeyCode()){
+            case KeyEvent.VK_LEFT : miNave.setPulsadoIzquierda(false); break;
+            case KeyEvent.VK_RIGHT : miNave.setPulsadoDerecha(false); break;
+        }
+    }//GEN-LAST:event_formKeyReleased
 
     /**
      * @param args the command line arguments
