@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import javax.swing.Timer;
 
@@ -22,7 +23,7 @@ import javax.swing.Timer;
 public class VentanaJuego extends javax.swing.JFrame {
     //Vamos a declarar dos constantes. Las constantes se ponen en mayúsculas.
     static int ANCHOPANTALLA=600;
-    static int ALTOPANTALLA=450;
+    static int ALTOPANTALLA=600;
     //Cuantos marcianos van a salir en la pantalla.
     int filaMarcianos=5;
     int columnaMarcianos=10;
@@ -106,6 +107,30 @@ public class VentanaJuego extends javax.swing.JFrame {
         }
     }
     
+    private void chequeaColision(){
+      //Vamos a crear dos rectángulos que cuando entran en contacto hagan que el marciano desaparezca.
+      Rectangle2D.Double rectanguloMarciano=new Rectangle2D.Double();
+      Rectangle2D.Double rectanguloDisparo=new Rectangle2D.Double();
+      //setFrame le va a dar un marco a ese rectángulo.
+      rectanguloDisparo.setFrame(miDisparo.getX(),miDisparo.getY(),miDisparo.imagen.getWidth(null), miDisparo.imagen.getHeight(null));
+      
+        
+        for(int i=0; i<filaMarcianos;i++){
+          for(int j=0;j<columnaMarcianos;j++){
+              //Reposicionamos el rectángulo del marciano en cada uno de los elementos del array.
+              rectanguloMarciano.setFrame(listaMarcianos[i][j].x, listaMarcianos[i][j].y, 
+                      listaMarcianos[i][j].imagen.getWidth(null), listaMarcianos[i][j].imagen.getHeight(null));
+              if(rectanguloDisparo.intersects(rectanguloMarciano)){
+                //Si da true es que los rectángulos han chocado en algún punto.
+                //Recolocamos al marciano y al disparo muy por debajo de la pantalla. La función booleana de disparo la ponemos a false.
+                listaMarcianos[i][j].y=2000;
+                miDisparo.setY(2000);
+                miDisparo.setDisparado(false);
+              }
+          }
+          }
+    }
+    
     private void bucleDelJuego(){
         //El bucle de animación gobierna el redibujado de los objetos en el jPanel1.
         Graphics2D g2= (Graphics2D) buffer.getGraphics();
@@ -129,22 +154,7 @@ public class VentanaJuego extends javax.swing.JFrame {
         
         pintaMarcianos(g2);
         
-       /* //Movimiento marcianos.
-        miMarciano.mueve();
-        
-        //Pintamos el marciano.
-        if(contador<50){
-          g2.drawImage(miMarciano.imagen,miMarciano.x,miMarciano.y,null);
-        }else if(contador<100){
-          g2.drawImage(miMarciano.imagen2,miMarciano.x,miMarciano.y,null);
-        }
-        else contador=0;
-        //Aquí hacemos comprobaciones del booleano para que el marciano cambie de dirección.
-        if(miMarciano.x==ANCHOPANTALLA-miMarciano.imagen.getWidth(null) || miMarciano.x==0){
-           miMarciano.direccion=!miMarciano.direccion;
-           //Esta parte hace que baje.
-           miMarciano.y+=miMarciano.imagen.getHeight(null);
-        }*/
+        chequeaColision();
         
         //Dibujo de golpe el buffer sobre el jPanel1.
         g2=(Graphics2D) jPanel1.getGraphics();
