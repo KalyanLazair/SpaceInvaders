@@ -81,29 +81,32 @@ public class VentanaJuego extends javax.swing.JFrame {
     
     private void pintaMarcianos(Graphics2D g2){
        
-        for(int i=0; i<filaMarcianos;i++){
-          for(int j=0;j<columnaMarcianos;j++){
-          //vamos a mover los marcianos. El booleano es para saber en qué dirección se mueve el grupo de marcianos.
-           listaMarcianos[i][j].mueve(direccionMarcianos);
-           
-           //Pintamos el marciano.
-          if(contador<50){
-            g2.drawImage(listaMarcianos[i][j].imagen,listaMarcianos[i][j].x,listaMarcianos[i][j].y,null);
-         }else if(contador<100){
-            g2.drawImage(listaMarcianos[i][j].imagen2,listaMarcianos[i][j].x,listaMarcianos[i][j].y,null);
-         }
-          else contador=0;
-        //Aquí hacemos comprobaciones del booleano para que el marciano cambie de dirección.
-          if(listaMarcianos[i][j].x==ANCHOPANTALLA-listaMarcianos[i][j].imagen.getWidth(null) || listaMarcianos[i][j].x==0){
-            direccionMarcianos=!direccionMarcianos;
-           //Esta parte hace que baje. Usamos un bucle for anidado para que baje todo el grupo.
-           for(int k=0;k<filaMarcianos;k++){
-               for(int m=0;m<columnaMarcianos;m++){
-                 listaMarcianos[k][m].y+=listaMarcianos[i][j].imagen.getHeight(null);
-               }
-           }
-        }
-          }
+        for (int i = 0; i < filaMarcianos; i++) {
+            for (int j = 0; j < columnaMarcianos; j++) {
+                if (listaMarcianos[i][j].vida == true) {
+                    //vamos a mover los marcianos. El booleano es para saber en qué dirección se mueve el grupo de marcianos.
+                    listaMarcianos[i][j].mueve(direccionMarcianos);
+
+                    //Pintamos el marciano.
+                    if (contador < 50) {
+                        g2.drawImage(listaMarcianos[i][j].imagen, listaMarcianos[i][j].x, listaMarcianos[i][j].y, null);
+                    } else if (contador < 100) {
+                        g2.drawImage(listaMarcianos[i][j].imagen2, listaMarcianos[i][j].x, listaMarcianos[i][j].y, null);
+                    } else {
+                        contador = 0;
+                    }
+                    //Aquí hacemos comprobaciones del booleano para que el marciano cambie de dirección.
+                    if (listaMarcianos[i][j].x == ANCHOPANTALLA - listaMarcianos[i][j].imagen.getWidth(null) || listaMarcianos[i][j].x == 0) {
+                        direccionMarcianos = !direccionMarcianos;
+                        //Esta parte hace que baje. Usamos un bucle for anidado para que baje todo el grupo.
+                        for (int k = 0; k < filaMarcianos; k++) {
+                            for (int m = 0; m < columnaMarcianos; m++) {
+                                listaMarcianos[k][m].y += listaMarcianos[i][j].imagen.getHeight(null);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -117,16 +120,18 @@ public class VentanaJuego extends javax.swing.JFrame {
         
         for(int i=0; i<filaMarcianos;i++){
           for(int j=0;j<columnaMarcianos;j++){
+             if(listaMarcianos[i][j].vida==true){
               //Reposicionamos el rectángulo del marciano en cada uno de los elementos del array.
               rectanguloMarciano.setFrame(listaMarcianos[i][j].x, listaMarcianos[i][j].y, 
                       listaMarcianos[i][j].imagen.getWidth(null), listaMarcianos[i][j].imagen.getHeight(null));
               if(rectanguloDisparo.intersects(rectanguloMarciano)){
                 //Si da true es que los rectángulos han chocado en algún punto.
                 //Recolocamos al marciano y al disparo muy por debajo de la pantalla. La función booleana de disparo la ponemos a false.
-                listaMarcianos[i][j].y=2000;
+                listaMarcianos[i][j].vida=false;
                 miDisparo.setY(2000);
                 miDisparo.setDisparado(false);
               }
+             }
           }
           }
     }

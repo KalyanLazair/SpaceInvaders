@@ -19,6 +19,9 @@ public class Marciano {
     //Coordenadas de la nave.
     public int x=0;
     public int y=0;
+    //Booleano para determinar si el marciano está vivo.
+    
+    public boolean vida=true;
     
     
     //Bean; Es una propiedad de una clase. Estas variables son privadas pero podemos acceder a ellas desde fuera con una propiedad
