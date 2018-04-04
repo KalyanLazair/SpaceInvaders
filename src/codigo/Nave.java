@@ -31,10 +31,10 @@ public class Nave {
     private int anchoPantalla;
     
     public Nave(int _anchoPantalla){
-      try{
+      /*try{
         imagen=ImageIO.read(getClass().getResource("/codigo/Imagenes/nave.png"));
       }
-      catch(IOException e){}
+      catch(IOException e){}*/
       anchoPantalla=_anchoPantalla;
     }
 //Todas las variables son get por defecto menos los booleanos, que son is. NetBeans nos crea automáticamente el código cuando

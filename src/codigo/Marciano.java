@@ -35,11 +35,11 @@ public class Marciano {
     
     
     public Marciano(int _anchoPantalla){
-      try{
+      /*try{
         imagen=ImageIO.read(getClass().getResource("/codigo/Imagenes/marcianito1.png"));
         imagen2=ImageIO.read(getClass().getResource("/codigo/Imagenes/marcianito2.png"));
       }
-      catch(IOException e){}
+      catch(IOException e){}*/
       anchoPantalla=_anchoPantalla;
     }
 
